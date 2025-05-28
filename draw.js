@@ -3,6 +3,18 @@ const canvas = new fabric.Canvas('canvas');
 canvas.setWidth(window.innerWidth);
 canvas.setHeight(window.innerHeight - 60);
 
+const wrapper = document.querySelector(".canvas-container");
+let canvasHeight = canvas.getHeight();
+
+wrapper.addEventListener('scroll', () => {
+  const scrollPosition = wrapper.scrollTop + wrapper.clientHeight;
+  const scrollHeight = wrapper.scrollHeight;
+  if (scrollHeight - scrollPosition < 50) {
+    canvasHeight += 250;
+    canvas.setHeight(canvasHeight);
+    canvas.requestRenderAll();
+  }
+});
 
 const squareCursor = 'data:image/svg+xml;base64,' + btoa(`
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
@@ -24,12 +36,29 @@ function switchoffline() {
     canvas.off('mouse:up',stopDrawingLine);
     canvas.off('mouse:down');
 }
+
+function addText() {
+  const text = new fabric.IText('Type here', {
+    left: 100,
+    top: 100,
+    fontFamily: 'Arial',
+    fill: selected_clr,
+    fontSize: 24,
+    editable: true
+  });
+  canvas.add(text);
+  canvas.setActiveObject(text);
+  canvas.requestRenderAll();
+}
+
 function startAddingLine(pos) {
     mousedwn = true;
     let ptr = canvas.getPointer(pos.e);
     line = new fabric.Line([ptr.x,ptr.y,ptr.x,ptr.y],{
         stroke : selected_clr,
-        strokeWidth : 3
+        strokeWidth : 5,
+        selectable: true,
+        evented: true
     })
     canvas.add(line);
     canvas.requestRenderAll();
@@ -47,15 +76,23 @@ function startDrawingLine(pos) {
 function stopDrawingLine() {
     mousedwn = false;
 }
+
 function erase() {
+  console.log("Eraser");
+  switchoffline();
   canvas.defaultCursor = squareCursor;
   canvas.isDrawingMode = false;
-  switchoffline();
-  canvas.selection = true;
-  canvas.forEachObject(obj => obj.selectable = true);
+  canvas.selection = false;
+  canvas.perPixelTargetFind = true;
+  canvas.targetFindTolerance = 18;
+  canvas.forEachObject(obj => {
+    obj.selectable = false;
+    obj.evented = true;
+  });
   canvas.on('mouse:down', function(e) {
     if (e.target) {
       canvas.remove(e.target);
+      canvas.requestRenderAll();
     }
   });
 }
