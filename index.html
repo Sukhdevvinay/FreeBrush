@@ -13,18 +13,20 @@
     <div class="toolbar">
         <button class="tool-button" title="Cursor" onclick=cursor()>🖱️</button>
         <button class="tool-button" title="Pencil" onclick=pencil()>✏️</button>
-        <button class="tool-button" title="Eraser" onclick= erase()>🧽</button>
-        <button class="tool-button" title="Rectangle" onclick = drawRect()>▭</button>
+        <button class="tool-button" title="Eraser" onclick= erase()>
+            <img src="icons8-eraser-24.png">
+        </button>
+        <button class="tool-button" title="Rectangle" onclick = drawRect()>▮</button>
         <button class="tool-button" title="Triangle" onclick=drawTriangle()>▲</button>
-        <button class="tool-button" title="Square" onclick= drawSqr()>◼️</button>
+        <button class="tool-button" title="Square" onclick= drawSqr()>◼</button>
         <button class="tool-button" title="Circle" onclick= drawCircle()>⚪</button>
-        <button class="tool-button" title="Line" onclick=drawline()>➖</button>
+        <button class="tool-button" title="Line" onclick=drawline()>▬</button>
         <button class="tool-button" title="Right Angle Triangle" onclick=drawRightAngleTriangle()>◣</button>
-        <button class="tool-button" title="Text Tool">🅣</button>
+        <button class="tool-button" title="Text Tool" onclick = addText()>T</button>
         <input type="color" class="color-picker" title="Pick a color" />
     </div>
-    <div class="canvas-container">
-        <canvas id="canvas"></canvas>
+    <div class="canvas-container" style="height: 600px; overflow-y: auto; border: 1px solid #ffff;">
+        <canvas id="canvas" height="1000"></canvas>
     </div>
     <script src="./draw.js" defer></script>
 </body>
