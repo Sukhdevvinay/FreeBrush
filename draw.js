@@ -6,15 +6,20 @@ canvas.setHeight(window.innerHeight - 60);
 const wrapper = document.querySelector(".canvas-container");
 let canvasHeight = canvas.getHeight();
 
-wrapper.addEventListener('scroll', () => {
+
+function handleScroll() {
   const scrollPosition = wrapper.scrollTop + wrapper.clientHeight;
   const scrollHeight = wrapper.scrollHeight;
   if (scrollHeight - scrollPosition < 50) {
     canvasHeight += 250;
     canvas.setHeight(canvasHeight);
+    canvas.getElement().style.height = canvasHeight + "px"; 
     canvas.requestRenderAll();
   }
-});
+}
+
+wrapper.addEventListener('scroll', handleScroll);
+wrapper.addEventListener('touchmove', handleScroll);
 
 const squareCursor = 'data:image/svg+xml;base64,' + btoa(`
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
